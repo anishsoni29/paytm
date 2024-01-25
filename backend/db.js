@@ -2,7 +2,7 @@
 //2. import mongoose and connect it to a url
 
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/test_db", {
+mongoose.connect("mongodb://localhost:27017/paytm", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
