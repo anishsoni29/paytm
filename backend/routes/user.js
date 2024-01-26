@@ -1,8 +1,6 @@
+//1. define a new router
 const express = require("express");
-const userRouter = require("./user");
-
 const router = express.Router();
-
-router.use("/user", userRouter);
-
 module.exports = router;
+
+//2. import it in the index.js file.
