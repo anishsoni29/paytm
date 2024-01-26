@@ -11,6 +11,7 @@ app.use("/api/v1", mainRouter);
 
 module.exports = router;
 
+app.listen(3000);
 //we are bootstraping our application as such
 //the requests which we send on the /api/v1 route
 //will go to the mainRouter which takes the data
