@@ -66,35 +66,36 @@ const updateBody = zod.object({
 });
 
 //route to find user via the initials of his/her name. --> using the $OR parameter.
-//syntax -->
-// User.find(
-//   {
-//     $or: [
-//       { _id: req.body._id },
-//       { firstName: req.body.firstName },
-//       { lastName: req.body.lastName },
-//     ],
-//   },
-//   function (err, result) {
-//     if (!err) {
-//       res.send(result);
-//     }
-//   }
-// );
+//so that users can search for their friends and send them money.
+router.get("/bulk", async (req, res) => {
+  const filter = req.query.filter || "";
 
-//or with the like syntax
+  const users = await User.find({
+    $or: [
+      {
+        //filtering the firstName based on the initials.
+        firstName: {
+          $regex: filter,
+        },
+      },
+      {
+        lastName: {
+          $regex: filter,
+        },
+      },
+    ],
+  });
 
-//route to get the users from the backend via firstName and lastName parameter is -->
-User.find(
-  {
-    $or: [{ firstName: req.body.firstName }, { lastName: req.body.lastName }],
-  },
-  function (err, result) {
-    if (!err) {
-      res.send(result);
-    }
-  }
-);
+  //mapping users via the username, firstName, lastName and _id.
+  res.json({
+    user: users.map((users) => ({
+      username: users.username,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      _id: users._id,
+    })),
+  });
+});
 
 //this route is to update user Information using the authMiddleware we defined earlier.
 router.put("/", authMiddleware, async function (req, res) {
