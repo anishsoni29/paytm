@@ -127,6 +127,14 @@ router.post("/signin", async (req, res) => {
     });
   }
 
+  //creating a new account --> updating the signup endpoint to give the user a randon balance from 1-10000.
+  //so that you don't need to connect to your bank account to display any balances.
+
+  await Account.create({
+    userId,
+    balance: 1 + Math.random() * 10000,
+  });
+
   const user = await User.findOne({
     username: req.body.username,
     password: req.body.password,
