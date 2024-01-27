@@ -67,6 +67,8 @@ const updateBody = zod.object({
 
 //route to find user via the initials of his/her name. --> using the $OR parameter.
 //so that users can search for their friends and send them money.
+
+//bulk is the route to get the users from the backend.
 router.get("/bulk", async (req, res) => {
   const filter = req.query.filter || "";
 

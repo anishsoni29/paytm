@@ -16,10 +16,27 @@ const userSchema = new mongoose.Schema({
   lastName: String,
 });
 
-//create a model for the schema
+//4.create a bank related schema
+const accountSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId, //cannot define the objectid directly
+    ref: "User",
+    required: true,
+  },
+  balance: {
+    type: Number,
+    required: type,
+  },
+});
+
+//create a model for the Bank schema
+const Account = mongoose.model("Account", accountSchema);
+
+//create a model for the User schema
 const User = mongoose.model("User", userSchema);
 
 //4.export the mongoose model
 module.exports = {
   User,
+  Account,
 };
