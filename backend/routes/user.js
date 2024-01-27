@@ -65,6 +65,23 @@ const updateBody = zod.object({
   lastName: zod.string().optional(),
 });
 
+//route to find user via the initials of his/her name. --> using the $OR parameter.
+//syntax -->
+// User.find(
+//   {
+//     $or: [
+//       { _id: req.body._id },
+//       { firstName: req.body.firstName },
+//       { lastName: req.body.lastName },
+//     ],
+//   },
+//   function (err, result) {
+//     if (!err) {
+//       res.send(result);
+//     }
+//   }
+// );
+
 //this route is to update user Information using the authMiddleware we defined earlier.
 router.put("/", authMiddleware, async function (req, res) {
   const { success } = updateBody.safeParse(req.body);
