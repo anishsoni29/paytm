@@ -82,6 +82,20 @@ const updateBody = zod.object({
 //   }
 // );
 
+//or with the like syntax
+
+//route to get the users from the backend via firstName and lastName parameter is -->
+User.find(
+  {
+    $or: [{ firstName: req.body.firstName }, { lastName: req.body.lastName }],
+  },
+  function (err, result) {
+    if (!err) {
+      res.send(result);
+    }
+  }
+);
+
 //this route is to update user Information using the authMiddleware we defined earlier.
 router.put("/", authMiddleware, async function (req, res) {
   const { success } = updateBody.safeParse(req.body);
