@@ -6,6 +6,7 @@ const zod = require("zod");
 const { User } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
+const { authMiddleware } = require("../middleware");
 
 const signupBody = zod.object({
   username: zod.string().email(),
@@ -56,6 +57,32 @@ router.post("/signup", async (req, res) => {
 const signinBody = zod.object({
   username: zod.string().email(),
   password: zod.string(),
+});
+
+const updateBody = zod.object({
+  password: zod.string().optional(),
+  firstName: zod.string().optional(),
+  lastName: zod.string().optional(),
+});
+
+//this route is to update user Information using the authMiddleware we defined earlier.
+router.put("/", authMiddleware, async function (req, res) {
+  const { success } = updateBody.safeParse(req.body);
+  if (!success) {
+    return res.status(411).json({
+      message: "Error while updating user information",
+    });
+  }
+
+  //updating the user information in the database.
+  await User.updateOne(req.body, {
+    where: {
+      _id: req.userId,
+    },
+  });
+  res.json({
+    message: "User updated successfully",
+  });
 });
 
 router.post("/signin", async (req, res) => {
